@@ -1,22 +1,25 @@
-# Use NVIDIA CUDA base image with runtime and cuDNN support
+# Use NVIDIA CUDA base image with runtime support
 FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies including cuDNN
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     ffmpeg \
     git \
-    libcudnn8=8.9.7.29-1+cuda12.2 \
-    libcudnn8-dev=8.9.7.29-1+cuda12.2 \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Add NVIDIA package repositories for cuDNN
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub \
-    && echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64 /" > /etc/apt/sources.list.d/cuda.list
+# Install cuDNN 9.x manually
+RUN wget https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/cudnn-linux-x86_64-9.1.0.70_cuda12-archive.tar.xz \
+    && tar -xvf cudnn-linux-x86_64-9.1.0.70_cuda12-archive.tar.xz \
+    && cp cudnn-linux-x86_64-9.1.0.70_cuda12-archive/lib/* /usr/local/cuda/lib64/ \
+    && cp cudnn-linux-x86_64-9.1.0.70_cuda12-archive/include/* /usr/local/cuda/include/ \
+    && rm -rf cudnn-linux-x86_64-9.1.0.70_cuda12-archive.tar.xz cudnn-linux-x86_64-9.1.0.70_cuda12-archive \
+    && ldconfig
 
 # Set Python 3 as default
 RUN ln -s /usr/bin/python3 /usr/bin/python
