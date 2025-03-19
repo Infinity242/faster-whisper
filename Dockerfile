@@ -27,8 +27,12 @@ RUN git clone https://github.com/Infinity242/faster-whisper.git /tmp/faster-whis
     && pip3 install --no-cache-dir . \
     && rm -rf /tmp/faster-whisper
 
-# Install PyTorch with CUDA support
-RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu122
+# Install PyTorch with CUDA 12.2 support for Python 3.10
+RUN pip3 install --no-cache-dir \
+    torch==2.5.0+cu122 \
+    torchvision==0.20.0+cu122 \
+    torchaudio==2.5.0+cu122 \
+    --index-url https://download.pytorch.org/whl/cu122
 
 # Copy handler script (you’ll need to create this)
 COPY rp_handler.py .
