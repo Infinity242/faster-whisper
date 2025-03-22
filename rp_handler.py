@@ -5,7 +5,7 @@ import tempfile
 import os
 
 # Load the model once when the container starts
-model = WhisperModel("large-v3", device="cuda", compute_type="float16")
+model = WhisperModel("large-v3-turbo", device="cuda", compute_type="float16")
 
 def handler(job):
     """Handle RunPod serverless requests."""
