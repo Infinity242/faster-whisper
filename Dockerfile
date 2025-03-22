@@ -48,7 +48,7 @@ COPY rp_handler.py .
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
-    WHISPER_MODEL=large-v3 \
+    WHISPER_MODEL=large-v2 \
     DEVICE=cuda
 
 # Run the RunPod serverless handler
